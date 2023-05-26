@@ -58,7 +58,7 @@ def test_daily_max_float():
 
 
 def test_daily_min_zeros():
-    """Test that daily max function works for an array where daily max appears twice"""
+    """Test that daily min function works for an array where daily min appears twice"""
     from inflammation.models import daily_min
 
     test_input = np.array([[0, 1],
@@ -71,7 +71,7 @@ def test_daily_min_zeros():
 
 
 def test_daily_min_float():
-    """Test that daily max function works for an array where daily max appears twice"""
+    """Test that daily min function works for an array where daily min is a float"""
     from inflammation.models import daily_min
 
     test_input = np.array([[0, 1.5],
@@ -88,3 +88,28 @@ def test_daily_min_string():
 
     with pytest.raises(TypeError):
         error_expected = daily_min([['Hello', 'there'], ['General', 'Kenobi']])
+
+@pytest.mark.parametrize(
+    'test, expected',
+    [
+        ([[0, 1], [0, 1], [2, 0]], [2, 1]),
+        ([[0, 0.5], [0, 0.6], [0, 0]], [0, 0.6]),
+
+    ])
+def test_daily_max(test, expected):
+    """Test daily max function works for array of recurring integers and floats"""
+    from inflammation.models import daily_max
+    npt.assert_array_equal(daily_max(np.array(test)), np.array(expected))
+
+
+@pytest.mark.parametrize(
+    'test, expected',
+    [
+        ([[0, 1], [0, 1], [0, 0]], [0, 0]),
+        ([[0, 0.5], [0, 0.6], [0, 0]], [0, 0.0]),
+
+    ])
+def test_daily_min(test, expected):
+    """Test daily min function works for array of zeros and floats"""
+    from inflammation.models import daily_min
+    npt.assert_array_equal(daily_min(np.array(test)), np.array(expected))
