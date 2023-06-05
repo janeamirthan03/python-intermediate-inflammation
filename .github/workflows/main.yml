@@ -20,4 +20,8 @@
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+        
+    - name: Check style with Pylint
+      run: |
+        python3 -m pylint --fail-under=0 --reports=y inflammation
 ...
